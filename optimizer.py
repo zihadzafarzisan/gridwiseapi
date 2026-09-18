@@ -5,7 +5,7 @@ with the HiGHS interior point / dual simplex solver. Handles solar reductions, d
 battery reserves, charging/discharging outages, grid import caps, and end-of-day neutrality.
 """
 
-from typing import List
+from typing import List, Optional
 import numpy as np
 from scipy.optimize import linprog
 
@@ -74,7 +74,7 @@ def solve_energy_dispatch(
     min_reserve = [float(battery.minimum_energy_kwh)] * 24
     charge_max = [float(battery.max_charge_kwh_per_hour)] * 24
     discharge_max = [float(battery.max_discharge_kwh_per_hour)] * 24
-    max_grid = [None] * 24
+    max_grid: List[Optional[float]] = [None] * 24
 
     for d in directives:
         if not d.applies or not d.structured_adjustment:

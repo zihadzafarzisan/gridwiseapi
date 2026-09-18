@@ -7,7 +7,7 @@ FastAPI application providing:
 
 import logging
 import os
-from typing import Any, Dict
+from typing import Dict
 
 from fastapi import FastAPI, HTTPException, Request, status
 from fastapi.exceptions import RequestValidationError
