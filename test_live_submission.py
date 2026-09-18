@@ -52,9 +52,29 @@ def run_live_audit() -> bool:
     all_tests_passed = True
 
     # ---------------------------------------------------------
-    # 1. Health Check
+    # 1. Health & Root Check
     # ---------------------------------------------------------
-    print("\n[Step 1] Auditing GET /health ...")
+    print("\n[Step 1a] Auditing GET / (Root Metadata) ...")
+    try:
+        t0 = time.perf_counter()
+        root_resp = client.get("/")
+        latency_root = (time.perf_counter() - t0) * 1000
+
+        if root_resp.status_code != 200:
+            print(f"  ✗ FAIL: Expected 200, got {root_resp.status_code}")
+            all_tests_passed = False
+        else:
+            body = root_resp.json()
+            if body.get("service") == "GridWise Energy Dispatch API" and body.get("status") == "online":
+                print(f"  ✓ PASS: GET / returned 200 OK with service metadata in {latency_root:.1f}ms")
+            else:
+                print(f"  ✗ FAIL: GET / body mismatch: {body}")
+                all_tests_passed = False
+    except Exception as e:
+        print(f"  ✗ ERROR: GET / failed with exception: {e}")
+        all_tests_passed = False
+
+    print("\n[Step 1b] Auditing GET /health ...")
     try:
         t0 = time.perf_counter()
         health_resp = client.get("/health")

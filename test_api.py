@@ -55,8 +55,25 @@ def load_sample_01() -> Dict[str, Any]:
 
 
 # ============================================================
-# Test 1: Health Check
+# Test 1: Root and Health Endpoints
 # ============================================================
+def test_root_endpoint():
+    """GET / returns HTTP 200 with service metadata and endpoints."""
+    response = client.get("/")
+    assert response.status_code == 200, f"Expected 200, got {response.status_code}"
+    body = response.json()
+    assert body == {
+        "service": "GridWise Energy Dispatch API",
+        "status": "online",
+        "version": "1.0.0",
+        "endpoints": {
+            "health": "/health",
+            "optimize": "/optimize-energy",
+            "documentation": "/docs",
+        },
+    }, f"Root response mismatch: {body}"
+
+
 def test_health_endpoint():
     """GET /health returns HTTP 200 with {"status": "ok"}."""
     response = client.get("/health")
@@ -187,6 +204,7 @@ def test_malformed_payload_returns_400():
 def run_api_tests() -> bool:
     """Execute all Phase 3 API verification tests."""
     tests = [
+        ("GET /", test_root_endpoint),
         ("GET /health", test_health_endpoint),
         ("POST /optimize-energy SAMPLE-01", test_optimize_energy_sample_01),
         ("Malformed payload 400 handling", test_malformed_payload_returns_400),

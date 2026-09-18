@@ -15,6 +15,7 @@ GridWise is an automated, production-grade 24-hour smart campus energy dispatch 
 
 | Method | Endpoint | Description | Expected Output / Status |
 | :--- | :--- | :--- | :--- |
+| `GET` | `/` | Root API metadata & endpoint discovery | Service information & endpoints (`200 OK`) |
 | `GET` | `/health` | Live service health check | `{"status": "ok"}` (`200 OK`) |
 | `POST` | `/optimize-energy` | 24-hour cost-optimal energy dispatch planning engine | Compliant 7-key JSON response (`200 OK`) |
 

@@ -7,7 +7,7 @@ FastAPI application providing:
 
 import logging
 import os
-from typing import Dict
+from typing import Any, Dict
 
 from fastapi import FastAPI, HTTPException, Request, status
 from fastapi.exceptions import RequestValidationError
@@ -110,6 +110,21 @@ async def generic_exception_handler(request: Request, exc: Exception) -> JSONRes
 # -----------------------------------------------------------------------------
 # API Endpoints
 # -----------------------------------------------------------------------------
+@app.get("/", status_code=status.HTTP_200_OK)
+async def root() -> Dict[str, Any]:
+    """Root endpoint providing service metadata and discovery links."""
+    return {
+        "service": "GridWise Energy Dispatch API",
+        "status": "online",
+        "version": "1.0.0",
+        "endpoints": {
+            "health": "/health",
+            "optimize": "/optimize-energy",
+            "documentation": "/docs",
+        },
+    }
+
+
 @app.get("/health", status_code=status.HTTP_200_OK)
 async def health_check() -> Dict[str, str]:
     """Health check endpoint.
