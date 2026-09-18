@@ -1,0 +1,35 @@
+# Environment & Secrets (STRICT: NEVER COPY TO DOCKER)
+.env
+.env.*
+*.env
+
+# Git repository
+.git
+.gitignore
+.dockerignore
+
+# Python bytecode and caches
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# Virtual environments
+venv
+.venv
+env
+ENV
+
+# Testing, Logs & Reports
+.pytest_cache
+.coverage
+.coverage.*
+htmlcov
+*.log
+
+# Operating System & IDEs
+.DS_Store
+Thumbs.db
+.idea
+.vscode
